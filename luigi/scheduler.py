@@ -379,8 +379,8 @@ class Worker:
 
     def is_trivial_worker(self, state):
         """
-        If it's not an assistant having only tasks that are without
-        requirements.
+        If it's not an assistant, and only has tasks that are without
+        resource requirements.
 
         We have to pass the state parameter for optimization reasons.
         """

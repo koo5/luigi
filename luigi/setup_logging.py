@@ -130,12 +130,16 @@ class DaemonLogging(BaseLogging):
             raise OSError("Error: Unable to locate specified logging configuration file!")
 
         logging.config.fileConfig(logging_conf)
+        logger = logging.getLogger('luigid')
+        logger.info('logging configured by logging_conf_file')
         return True
 
     @classmethod
     def _default(cls, opts):
         """Setup default logger"""
         logging.basicConfig(level=logging.INFO, format=cls._log_format)
+        logger = logging.getLogger('luigid')
+        logger.info('logging configured by default settings')
         return True
 
 
