@@ -164,9 +164,9 @@ var LuigiAPI = (function() {
         });
     };
 
-    LuigiAPI.prototype.setWorkerCustomDisconnectDelay = function(workerId, n, callback) {
+    LuigiAPI.prototype.setWorkerDisconnectDelay = function(workerId, n, callback) {
         var data = {worker: workerId, n: n};
-        jsonRPC(this.urlRoot + "/set_worker_custom_disconnect_delay", data, function(response) {
+        jsonRPC(this.urlRoot + "/set_worker_disconnect_delay", data, function(response) {
             callback();
         });
     };

@@ -358,8 +358,14 @@ class Worker:
     def add_info(self, info):
         self.info.update(info)
 
-    def set_custom_disconnect_delay(self, delay):
+    def set_disconnect_delay(self, delay):
         self.custom_disconnect_delay = delay
+
+    def disconnect_delay(self, scheduler_config):
+        if self.custom_disconnect_delay is None:
+            return scheduler_config.worker_disconnect_delay
+        else
+            return self.custom_disconnect_delay
 
     def update(self, worker_reference, get_work=False):
         if worker_reference:
@@ -370,12 +376,9 @@ class Worker:
 
     def prune(self, config):
         # Delete workers that haven't said anything for a while (probably killed)
-        if self.custom_disconnect_delay:
-            disconnect_delay = self.custom_disconnect_delay
-        else:
-            disconnect_delay = config.worker_disconnect_delay
+        disconnect_delay = self.disconnect_delay(config)
         if self.last_active + disconnect_delay < time.time():
-            logger.debug("Worker %s timed out (no contact for >=%ss)", self, disconnect_delay)
+            logger.debug("Worker {self} timed out (no contact for >={disconnect_delay}s)")
             return True
 
     def get_tasks(self, state, *statuses):
@@ -972,8 +975,8 @@ class Scheduler:
         self._state.get_worker(worker).add_rpc_message('set_worker_processes', n=n)
 
     @rpc_method()
-    def set_worker_custom_disconnect_delay(self, worker, n):
-        self._state.get_worker(worker).set_custom_disconnect_delay(n)
+    def set_worker_disconnect_delay(self, worker, n):
+        self._state.get_worker(worker).set_disconnect_delay(n)
 
     @rpc_method()
     def send_scheduler_message(self, worker, task, content):
@@ -1185,7 +1188,7 @@ class Scheduler:
         else:
             relevant_tasks = self._state.get_active_tasks_by_status(PENDING, RUNNING)
             used_resources = self._used_resources()
-            activity_limit = time.time() - self._config.worker_disconnect_delay
+            activity_limit = time.time() - self._config.worker_disconnect_delay # note that a worker can have a custom disconnect delay, this would not be factored in here. But i don't understand the logic below and i'm not sure what exactly is accomplished by checking *last_get_work* against disconnect delay.
             active_workers = self._state.get_active_workers(last_get_work_gt=activity_limit)
             greedy_workers = dict((worker.id, worker.info.get('workers', 1))
                                   for worker in active_workers)
@@ -1483,7 +1486,7 @@ class Scheduler:
                 state=worker.state,
                 first_task_display_name=self._first_task_display_name(worker),
                 num_unread_rpc_messages=len(worker.rpc_messages),
-                custom_disconnect_delay=worker.custom_disconnect_delay,
+                disconnect_delay=worker.disconnect_delay(self._config),
                 **worker.info
             ) for worker in self._state.get_active_workers()]
         workers.sort(key=lambda worker: worker['started'], reverse=True)

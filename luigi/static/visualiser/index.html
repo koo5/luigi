@@ -169,18 +169,21 @@
                     <h3 class="box-title">{{name}}</h3>
                     <div class="pull-right">
                       <span class="btn-group">
-                        <button type="button" class="btn btn-sm btn-default dropdown-toggle btn-set-worker-custom-disconnect-delay" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Custom disconnect delay: <span id="label-custom-disconnect-delay" data-worker="{{name}}">{{custom_disconnect_delay}}</span> <span class="caret"></span>
+                        <button type="button" class="btn btn-sm btn-default dropdown-toggle btn-set-worker-disconnect-delay" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Disconnect delay: <span id="label-disconnect-delay" data-worker="{{name}}">{{disconnect_delay}}</span> <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                          <li><a href="#" id="btn-set-worker-custom-disconnect-delay-no" data-worker="{{name}}">
-                             no
-                          </a></li>
-                          <li><a href="#" id="btn-set-worker-custom-disconnect-delay-60" data-worker="{{name}}">
+                          <li><a href="#" id="btn-set-worker-disconnect-delay-60s" data-worker="{{name}}">
                              60s
                           </a></li>
-                          <li><a href="#" id="btn-set-worker-custom-disconnect-delay-3600" data-worker="{{name}}">
+                          <li><a href="#" id="btn-set-worker-disconnect-delay-3600s" data-worker="{{name}}">
                              3600s
+                          </a></li>
+                          <li><a href="#" id="btn-set-worker-disconnect-delay-86400s" data-worker="{{name}}">
+                             86400s
+                          </a></li>
+                          <li><a href="#" id="btn-set-worker-disconnect-delay-31536000s" data-worker="{{name}}">
+                             31536000s
                           </a></li>
                         </ul>
                       </span>

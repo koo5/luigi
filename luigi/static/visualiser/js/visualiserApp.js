@@ -1042,16 +1042,16 @@ function visualiserApp(luigi) {
     }
 
     /**
-     * Updates the custom disconnect delay of a worker
+     * Updates the disconnect delay of a worker
      * @param worker: the id of the worker
-     * @param n: delay, in seconds
+     * @param n: disconnect delay, in seconds
      */
-    function updateWorkerCustomDisconnectDelay(worker, n) {
+    function updateWorkerDisconnectDelay(worker, n) {
         // the spinner is just for visual feedback
-        var $label = $('#workerList').find('#label-custom-disconnect-delay[data-worker="' + worker + '"]');
+        var $label = $('#workerList').find('#label-disconnect-delay[data-worker="' + worker + '"]');
         $label.html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
 
-        luigi.setWorkerCustomDisconnectDelay(worker, n, function() {
+        luigi.setWorkerDisconnectDelay(worker, n, function() {
             $label.text(n);
         });
     }
@@ -1443,21 +1443,27 @@ function visualiserApp(luigi) {
             $event.preventDefault();
         });
 
-        $('#workerList').on('click', '#btn-set-worker-custom-disconnect-delay-no', function($event) {
+        $('#workerList').on('click', '#btn-set-worker-disconnect-delay-60s', function($event) {
             var worker = $(this).data("worker");
-                updateWorkerCustomDisconnectDelay(worker, null);
+                updateWorkerDisconnectDelay(worker, 60);
             $event.preventDefault();
         });
 
-        $('#workerList').on('click', '#btn-set-worker-custom-disconnect-delay-60', function($event) {
+        $('#workerList').on('click', '#btn-set-worker-disconnect-delay-3600s', function($event) {
             var worker = $(this).data("worker");
-                updateWorkerCustomDisconnectDelay(worker, 60);
+                updateWorkerDisconnectDelay(worker, 3600);
             $event.preventDefault();
         });
 
-        $('#workerList').on('click', '#btn-set-worker-custom-disconnect-delay-3600', function($event) {
+        $('#workerList').on('click', '#btn-set-worker-disconnect-delay-86400s', function($event) {
             var worker = $(this).data("worker");
-                updateWorkerCustomDisconnectDelay(worker, 3600);
+                updateWorkerDisconnectDelay(worker, 86400);
+            $event.preventDefault();
+        });
+
+        $('#workerList').on('click', '#btn-set-worker-disconnect-delay-31536000s', function($event) {
+            var worker = $(this).data("worker");
+                updateWorkerDisconnectDelay(worker, 31536000);
             $event.preventDefault();
         });
 
